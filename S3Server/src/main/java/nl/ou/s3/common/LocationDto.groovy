@@ -1,4 +1,4 @@
-package nl.gjdenbesten.s3.common
+package nl.ou.s3.common
 
 import groovy.transform.CompileStatic
 

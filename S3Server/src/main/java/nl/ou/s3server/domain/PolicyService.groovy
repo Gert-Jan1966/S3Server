@@ -1,4 +1,4 @@
-package nl.gjdenbesten.s3server.domain
+package nl.ou.s3server.domain
 
 import static nl.gjdenbesten.s3server.config.GoogleGeocodingApi.API_KEY
 

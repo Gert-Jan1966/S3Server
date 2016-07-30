@@ -1,4 +1,4 @@
-package nl.gjdenbesten.s3server.config
+package nl.ou.s3server.config
 
 import io.beanmapper.BeanMapper
 

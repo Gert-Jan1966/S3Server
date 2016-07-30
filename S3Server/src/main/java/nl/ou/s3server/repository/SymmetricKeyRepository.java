@@ -1,8 +1,8 @@
-package nl.gjdenbesten.s3server.repository;
+package nl.ou.s3server.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import nl.gjdenbesten.s3server.domain.SymmetricKey;
+import nl.ou.s3server.domain.SymmetricKey;
 
 /**
  * Spring Data gebaseerde repository voor MongoDB SymmetricKey documents.<br>

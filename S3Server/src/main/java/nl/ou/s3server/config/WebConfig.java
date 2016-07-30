@@ -1,11 +1,11 @@
-package nl.gjdenbesten.s3server.config;
+package nl.ou.s3server.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
-import nl.gjdenbesten.s3server.controller.RefererHandlerInterceptor;
+import nl.ou.s3server.controller.RefererHandlerInterceptor;
 
 /**
  * Deze Javaklasse bevat de Spring MVC configuratie.

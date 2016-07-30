@@ -1,4 +1,4 @@
 /**
  * Deze package bevat de RESTful controllers
  */
-package nl.gjdenbesten.s3server.controller;
+package nl.ou.s3server.controller;

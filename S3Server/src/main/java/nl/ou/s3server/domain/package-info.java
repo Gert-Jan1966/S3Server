@@ -1,4 +1,4 @@
 /**
  * Deze package bevat de classes die het domain van deze applicatie vormen.
  */
-package nl.gjdenbesten.s3server.domain;
+package nl.ou.s3server.domain;

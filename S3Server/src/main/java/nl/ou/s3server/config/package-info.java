@@ -1,4 +1,4 @@
 /**
  * Deze package bevat de (Spring) configuratieklassen in JavaConfig formaat.
  */
-package nl.gjdenbesten.s3server.config;
+package nl.ou.s3server.config;

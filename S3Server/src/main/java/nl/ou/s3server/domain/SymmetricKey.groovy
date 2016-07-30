@@ -1,4 +1,4 @@
-package nl.gjdenbesten.s3server.domain
+package nl.ou.s3server.domain
 
 import groovy.transform.CompileStatic
 import nl.gjdenbesten.s3.common.S3ExpirationPolicy;

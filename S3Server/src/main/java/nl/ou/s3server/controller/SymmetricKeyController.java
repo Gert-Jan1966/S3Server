@@ -1,4 +1,4 @@
-package nl.gjdenbesten.s3server.controller;
+package nl.ou.s3server.controller;
 
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import nl.gjdenbesten.s3.common.LocationDto;
-import nl.gjdenbesten.s3server.domain.PolicyException;
-import nl.gjdenbesten.s3server.domain.PolicyService;
-import nl.gjdenbesten.s3server.domain.SymmetricKey;
-import nl.gjdenbesten.s3server.repository.SymmetricKeyRepository;
+import nl.ou.s3.common.LocationDto;
+import nl.ou.s3server.domain.PolicyException;
+import nl.ou.s3server.domain.PolicyService;
+import nl.ou.s3server.domain.SymmetricKey;
+import nl.ou.s3server.repository.SymmetricKeyRepository;
 
 /**
  * RESTful controller voor afhandeling van requests naar /S3Server/symmetrickey.

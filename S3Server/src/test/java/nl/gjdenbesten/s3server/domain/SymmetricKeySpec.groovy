@@ -3,6 +3,7 @@ package nl.gjdenbesten.s3server.domain
 import javax.validation.Validation
 import javax.validation.Validator
 
+import nl.ou.s3server.domain.SymmetricKey;
 import spock.lang.*
 
 @Title("Unittest voor SymmetricKey")
