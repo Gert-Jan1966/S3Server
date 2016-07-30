@@ -1,4 +1,4 @@
-package nl.gjdenbesten.s3server.domain
+package nl.ou.s3server.domain
 
 import nl.gjdenbesten.s3.common.S3ExpirationPolicy
 import nl.ou.s3server.domain.PolicyException;

@@ -1,4 +1,4 @@
-package nl.gjdenbesten.s3server.domain
+package nl.ou.s3server.domain
 
 import javax.validation.Validation
 import javax.validation.Validator
