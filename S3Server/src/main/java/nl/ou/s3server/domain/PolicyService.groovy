@@ -1,6 +1,6 @@
 package nl.ou.s3server.domain
 
-import static nl.gjdenbesten.s3server.config.GoogleGeocodingApi.API_KEY
+import static nl.ou.s3server.config.GoogleGeocodingApi.API_KEY
 
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -13,7 +13,7 @@ import com.google.maps.model.AddressType
 import com.google.maps.model.GeocodingResult
 import com.google.maps.model.LatLng
 
-import nl.gjdenbesten.s3.common.LocationDto
+import nl.ou.s3.common.LocationDto
 
 /**
  * Bevat het 'transaction script' voor afhandeling van logica voor het checken tegen policies.<br>

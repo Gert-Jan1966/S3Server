@@ -1,6 +1,6 @@
 package nl.ou.s3server.domain
 
-import nl.gjdenbesten.s3.common.S3ExpirationPolicy
+import nl.ou.s3.common.S3ExpirationPolicy
 import nl.ou.s3server.domain.PolicyException;
 import nl.ou.s3server.domain.PolicyService;
 import nl.ou.s3server.domain.SymmetricKey;

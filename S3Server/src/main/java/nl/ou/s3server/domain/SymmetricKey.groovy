@@ -1,8 +1,8 @@
 package nl.ou.s3server.domain
 
 import groovy.transform.CompileStatic
-import nl.gjdenbesten.s3.common.S3ExpirationPolicy;
-import nl.gjdenbesten.s3.common.S3LocationPolicy;
+import nl.ou.s3.common.S3ExpirationPolicy;
+import nl.ou.s3.common.S3LocationPolicy;
 
 import org.hibernate.validator.constraints.NotEmpty
 import org.springframework.data.annotation.Id
