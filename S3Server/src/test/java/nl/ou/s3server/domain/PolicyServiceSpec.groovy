@@ -1,9 +1,7 @@
 package nl.ou.s3server.domain
 
+import nl.ou.s3.common.LocationDto
 import nl.ou.s3.common.S3ExpirationPolicy
-import nl.ou.s3server.domain.PolicyException;
-import nl.ou.s3server.domain.PolicyService;
-import nl.ou.s3server.domain.SymmetricKey;
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
@@ -15,6 +13,9 @@ class PolicyServiceSpec extends Specification {
 
     @Shared
     PolicyService policyService = new PolicyService()
+    
+    @Shared
+    LocationDto nullLocation = null
     
     // Maak date/timestamp van vandaag aan & zet het tijdgedeelte op 0.    
     @Shared
@@ -29,7 +30,7 @@ class PolicyServiceSpec extends Specification {
         SymmetricKey keyVerlopen = new SymmetricKey(expirationPolicy: verlopenExpirationPolicy)
 
         when:
-        policyService.checkForCompliance(keyVerlopen)
+        policyService.checkForCompliance(keyVerlopen, nullLocation)
 
         then:
         PolicyException exception = thrown()
@@ -41,7 +42,7 @@ class PolicyServiceSpec extends Specification {
         SymmetricKey keyNogGeldig = new SymmetricKey(expirationPolicy: geldigeExpirationPolicy)
 
         then:
-        policyService.checkForCompliance(keyNogGeldig)
+        policyService.checkForCompliance(keyNogGeldig, nullLocation)
     }
     
 }

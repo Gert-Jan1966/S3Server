@@ -17,7 +17,7 @@
     </context-param>
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>nl.gjdenbesten.s3server.config.AppConfig</param-value>
+        <param-value>nl.ou.s3server.config.AppConfig</param-value>
     </context-param>
 
     <!-- SpringFramework Context Loader Listener. -->
@@ -35,7 +35,7 @@
         </init-param>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>nl.gjdenbesten.s3server.config.WebConfig</param-value>
+            <param-value>nl.ou.s3server.config.WebConfig</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>

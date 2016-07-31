@@ -1,9 +1,14 @@
 package nl.ou.s3server.controller;
 
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +30,24 @@ import nl.ou.s3server.repository.SymmetricKeyRepository;
 @RequestMapping("/symmetrickey")
 public class SymmetricKeyController {
 
+    Logger logger = LoggerFactory.getLogger(SymmetricKeyController.class);
+    
     @Autowired
     private PolicyService policyService;
     
     @Autowired
     private SymmetricKeyRepository symmetricKeyRepository;
-
+    
+//    /**
+//     * Retourneert een JSON-array met alle opgeslagen symmetric keys.<br>
+//     * ===>>> NIET IN DE PRODUCTIEVE VERSIE OPNEMEN!!!!!!! <<<===
+//     */
+//    @RequestMapping(method = GET)
+//    public List<SymmetricKey> findAllKeys() {
+//        logger.warn("Iemand heeft alle opgeslagen keys opgehaald!");
+//        return symmetricKeyRepository.findAll();
+//    }
+    
     /**
      * Opvragen SymmetricKey m.b.v. een id en meegestuurde locatiegegevens.<br>
      * Gebruikt returntype <i>ResponseEntity</i>, dit geeft meer flexibiliteit voor terugsturen van meldingen e.d.
@@ -38,8 +55,9 @@ public class SymmetricKeyController {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @RequestMapping(value = "/{id}", method = POST)
     public ResponseEntity<?> findKey(@PathVariable("id") String id, @RequestBody LocationDto location) {
-        SymmetricKey key = symmetricKeyRepository.findOne(id);
+        logger.warn("Ontvangen locatiegegevens: " + location.toString());
         
+        SymmetricKey key = symmetricKeyRepository.findOne(id);
         try {
             policyService.checkForCompliance(key, location);
             return new ResponseEntity(key, HttpStatus.OK);
@@ -70,6 +88,8 @@ public class SymmetricKeyController {
      */
     @RequestMapping(value = "/{id}", method = DELETE)
     public void deleteKey(@PathVariable(value = "id") String id) {
+        logger.warn("Verwijderen verzocht voor key: " + id);
+        
         symmetricKeyRepository.delete(id);
     }
 

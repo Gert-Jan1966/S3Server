@@ -24,8 +24,8 @@ import com.mongodb.WriteConcern
  * Spring configuratie o.b.v. de AbstractMongoConfiguration klasse.
  */
 @Configuration
-@ComponentScan(basePackages="nl.gjdenbesten.s3server.domain")
-@EnableMongoRepositories(basePackages="nl.gjdenbesten.s3server.repository")
+@ComponentScan(basePackages="nl.ou.s3server.domain")
+@EnableMongoRepositories(basePackages="nl.ou.s3server.repository")
 @PropertySource("classpath:mongodb.properties")
 class AppConfig extends AbstractMongoConfiguration {
 

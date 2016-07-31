@@ -11,7 +11,7 @@ import nl.ou.s3server.controller.RefererHandlerInterceptor;
  * Deze Javaklasse bevat de Spring MVC configuratie.
  */
 @Configuration
-@ComponentScan(basePackages="nl.gjdenbesten.s3server.controller")
+@ComponentScan(basePackages="nl.ou.s3server.controller")
 public class WebConfig extends WebMvcConfigurationSupport {
 
     @Override

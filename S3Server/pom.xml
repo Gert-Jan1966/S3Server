@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>nl.gjdenbesten</groupId>
     <artifactId>S3Server</artifactId>
-    <version>0.4.0</version>
+    <version>0.4.1</version>
     <packaging>war</packaging>
     <name>S3Server</name>
   
@@ -26,6 +26,10 @@
         <!-- Groovy en Spock. -->
         <groovy.version>2.4.3</groovy.version>
         <spock.version>1.0-groovy-2.4</spock.version>
+        
+        <!-- Logging. -->
+        <log4j.version>1.2.17</log4j.version>
+        <slf4j-log4j12.version>1.7.21</slf4j-log4j12.version>
         
         <hbm2ddl.auto>none</hbm2ddl.auto>
     </properties>
@@ -213,7 +217,27 @@
             <artifactId>google-maps-services</artifactId>
             <version>${google-maps-services.version}</version>
         </dependency>
-        
+
+
+        <!-- Logging -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
+            <!-- <scope>provided</scope> -->
+        </dependency>
+        <!-- 
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>${commons-logging.version}</version>
+        </dependency>
+         -->
+        <dependency>    <!-- I.p.v. transitieve slf4j deps in Spring Data, Hibernate (Validator), Querydsl en Dozer. -->
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j-log4j12.version}</version>
+        </dependency>
         
         <!-- (Unit)test dependencies. -->
         <dependency>
