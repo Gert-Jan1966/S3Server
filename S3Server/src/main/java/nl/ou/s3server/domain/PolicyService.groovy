@@ -26,8 +26,6 @@ class PolicyService {
     
     static final String EXPIRATION_ERROR = "EXPIRATION_ERROR: Geldigheid van selfie is verlopen!"
     static final String LOCATION_ERROR = "LOCATION_ERROR:"
-
-    String locatieFoutmelding = null
     
     /**
      * Zoek de gewenste key en controleer vervolgens of aan aanwezige policies wordt voldaan.
@@ -41,9 +39,11 @@ class PolicyService {
             }
         }
         
+        String locatieFoutmelding = null
+        
         // Check de locationPolicy.
         if (key.locationPolicy) {
-            if (!isLocationPolicyCompliant(key, location)) {
+            if (!isLocationPolicyCompliant(key, location, locatieFoutmelding)) {
                 throw new PolicyException(locatieFoutmelding)
             }
         }
@@ -56,6 +56,8 @@ class PolicyService {
      * Ofwel: Is de verlooptijd van de selfie nog niet verstreken?<br><br>
      * 
      * Dit is Java 8, dus we gebruiken de nieuwe java.time API dus wel de Java Date uit de policy converteren!
+     * 
+     * @return Is "huidige date/timestamp" < "tijdstip einde geldigheid" ?
      */
     private Boolean isExpirationPolicyCompliant(SymmetricKey key) {
         LocalDateTime now = LocalDateTime.now()
@@ -69,14 +71,19 @@ class PolicyService {
     /**
      * Wordt aan de locationPolicy voldaan?<br>
      * Ofwel: valt de meegestuurde locatie binnen de postcode van de policy?
+     * 
+     * @return Komt de postcode volgend uit de ontvangen coordinaten overeen met postcode uit de policy?<br>
+     *         <i>Neveneffect:</i> bij foutsituaties wordt de invoerparameter <i>locatieFoutmelding</i> gevuld. 
      */
-    private Boolean isLocationPolicyCompliant(SymmetricKey key, LocationDto location) {
+    private Boolean isLocationPolicyCompliant(SymmetricKey key, LocationDto location, String locatieFoutmelding) {
         GeoApiContext geoApiContext = new GeoApiContext().setApiKey(API_KEY)
         GeocodingResult[] result = null
         
         // Probeer de postcode van meegestuurde locatie te bepalen.
         try {
             LatLng latLng = new LatLng(location.latitude, location.longitude)
+            
+            // Synchrone aanroep Google API, doorgaan zonder het resultaat af te wachten is zinloos!
             result = GeocodingApi.reverseGeocode(geoApiContext, latLng).resultType(AddressType.POSTAL_CODE)
                     .language("nl").await()
         } catch (Exception e) {
@@ -85,7 +92,7 @@ class PolicyService {
         }
         
         // Geef foutmelding als we geen resultaat hebben ontvangen
-        if (result == null || result.length == 0) {
+        if (!result) {
             locatieFoutmelding = "${LOCATION_ERROR} Response vanuit GeocodingAPI is leeg!"
             return false
         }
