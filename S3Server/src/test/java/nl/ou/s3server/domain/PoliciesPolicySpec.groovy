@@ -8,11 +8,11 @@ import spock.lang.Subject
 import spock.lang.Title
 
 @Title("Unittest voor PolicyService")
-@Subject(PolicyService)
-class PolicyServiceSpec extends Specification {
+@Subject(PoliciesPolicy)
+class PoliciesPolicySpec extends Specification {
 
     @Shared
-    PolicyService policyService = new PolicyService()
+    PoliciesPolicy policyService = new PoliciesPolicy()
     
     @Shared
     LocationDto nullLocation = null
@@ -34,7 +34,7 @@ class PolicyServiceSpec extends Specification {
 
         then:
         PolicyException exception = thrown()
-        exception.message.contains(PolicyService.EXPIRATION_ERROR)
+        exception.message.contains(PoliciesPolicy.EXPIRATION_ERROR)
     }
     
     def "Test checkForCompliance voor expirationPolicy met nog geldige verloopdatum/-tijd"() {

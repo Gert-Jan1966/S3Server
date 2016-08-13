@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import nl.ou.s3.common.LocationDto;
 import nl.ou.s3server.domain.PolicyException;
-import nl.ou.s3server.domain.PolicyService;
+import nl.ou.s3server.domain.PoliciesPolicy;
 import nl.ou.s3server.domain.SymmetricKey;
 import nl.ou.s3server.repository.SymmetricKeyRepository;
 
@@ -31,9 +31,9 @@ import nl.ou.s3server.repository.SymmetricKeyRepository;
 public class SymmetricKeyController {
 
     Logger logger = LoggerFactory.getLogger(SymmetricKeyController.class);
-    
+
     @Autowired
-    private PolicyService policyService;
+    private PoliciesPolicy policiesPolicy;
     
     @Autowired
     private SymmetricKeyRepository symmetricKeyRepository;
@@ -59,7 +59,7 @@ public class SymmetricKeyController {
         
         SymmetricKey key = symmetricKeyRepository.findOne(id);
         try {
-            policyService.checkForCompliance(key, location);
+            policiesPolicy.checkForCompliance(key, location);
             return new ResponseEntity(key, HttpStatus.OK);
         } catch (PolicyException pe) {
             return new ResponseEntity(pe.getMessage(), HttpStatus.FORBIDDEN);
@@ -70,7 +70,7 @@ public class SymmetricKeyController {
      * Opslaan van een nieuwe symmetrische key.
      */
     @RequestMapping(method = POST)
-    public SymmetricKey create(@RequestBody SymmetricKey symmetricKey) {
+    public SymmetricKey createKey(@RequestBody SymmetricKey symmetricKey) {
         return symmetricKeyRepository.save(symmetricKey);
     }
     
@@ -78,7 +78,7 @@ public class SymmetricKeyController {
      * Updaten van een bestaande symmetrische key.
      */
     @RequestMapping(value = "/{id}", method = PUT)
-    public SymmetricKey update(@RequestBody SymmetricKey symmetricKey) {
+    public SymmetricKey updateKey(@RequestBody SymmetricKey symmetricKey) {
         return symmetricKeyRepository.save(symmetricKey);
     }
 

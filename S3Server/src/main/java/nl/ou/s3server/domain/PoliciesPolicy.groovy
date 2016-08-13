@@ -5,7 +5,9 @@ import static nl.ou.s3server.config.GoogleGeocodingApi.API_KEY
 import java.time.LocalDateTime
 import java.time.ZoneId
 
-import org.springframework.stereotype.Service
+import nl.ou.s3.common.LocationDto
+
+import org.springframework.stereotype.Component
 
 import com.google.maps.GeoApiContext
 import com.google.maps.GeocodingApi
@@ -13,22 +15,17 @@ import com.google.maps.model.AddressType
 import com.google.maps.model.GeocodingResult
 import com.google.maps.model.LatLng
 
-import nl.ou.s3.common.LocationDto
-
 /**
- * Bevat het 'transaction script' voor afhandeling van logica voor het checken tegen policies.<br>
- * 
- * Voor beschrijving van het Transaction Script pattern, zie: 
- * <a href="http://martinfowler.com/eaaCatalog/transactionScript.html">http://martinfowler.com/eaaCatalog/transactionScript.html</a>.
+ * Bevat de logica voor het checken van aangeleverde data tegen mogelijk aanwezige policies.<br>
  */
-@Service
-class PolicyService {
+@Component
+class PoliciesPolicy {
     
     static final String EXPIRATION_ERROR = "EXPIRATION_ERROR: Geldigheid van selfie is verlopen!"
     static final String LOCATION_ERROR = "LOCATION_ERROR:"
     
     /**
-     * Zoek de gewenste key en controleer vervolgens of aan aanwezige policies wordt voldaan.
+     * Controleer of aan eventueel bij <i>key</i> aanwezige policies wordt voldaan.
      */
     Boolean checkForCompliance(SymmetricKey key, LocationDto location) throws PolicyException {
 
@@ -91,7 +88,7 @@ class PolicyService {
             return false
         }
         
-        // Geef foutmelding als we geen resultaat hebben ontvangen
+        // Geef foutmelding als we geen resultaat hebben ontvangen.
         if (!result) {
             locatieFoutmelding = "${LOCATION_ERROR} Response vanuit GeocodingAPI is leeg!"
             return false
