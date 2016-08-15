@@ -27,5 +27,16 @@ class SymmetricKeySpec extends Specification {
         "x"   | ""         ||     1
         "x"   | "A"        ||     0
     }
+    
+    def "Test transitieve constraints m.b.t. Policies in SymmetricKey"() {
+        when: "SymmetricKey 1 of 2 Policies bevat"
+        def locationPolicy = new S3LocationPolicy()
+        def expirationPolicy = new S3ExpirationPolicy()
+        def symmetricKey = new SymmetricKey(
+                locationPolicy: locationPolicy, expirationPolicy: expirationPolicy, key: "A")
+        
+        then: "moeten deze Policies zelf ook ingevulde waarden hebben"
+        validator.validate(symmetricKey).size() == 2
+    }
 
 }

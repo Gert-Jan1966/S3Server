@@ -2,6 +2,8 @@ package nl.ou.s3server.domain
 
 import groovy.transform.CompileStatic
 
+import javax.validation.Valid
+
 import org.hibernate.validator.constraints.NotEmpty
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
@@ -17,10 +19,12 @@ class SymmetricKey {
     @Id 
     String id
     
-    /* 
-     * Alle policies waaraan voldaan moet worden voordat de key wordt verstrekt. 
-     */
+    /** Optionele Policy t.b.v. tijdstip einde geldigheid.  */
+    @Valid
     S3ExpirationPolicy expirationPolicy
+    
+    /** Optionele Policy m.b.t. locatie van gebruiker/device. */
+    @Valid
     S3LocationPolicy locationPolicy
     
     /** De daadwerkelijke symmetrische key. */

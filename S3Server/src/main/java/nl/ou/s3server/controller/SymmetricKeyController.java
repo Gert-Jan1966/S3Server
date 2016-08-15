@@ -54,7 +54,10 @@ public class SymmetricKeyController {
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @RequestMapping(value = "/{id}", method = POST)
-    public ResponseEntity<?> findKey(@PathVariable("id") String id, @RequestBody LocationDto location) {
+    public ResponseEntity<?> findKey(
+            @PathVariable("id") String id, 
+            @RequestBody LocationDto location) {
+        
         logger.warn("Ontvangen locatiegegevens: " + location.toString());
         
         SymmetricKey key = symmetricKeyRepository.findOne(id);
