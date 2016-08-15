@@ -1,7 +1,5 @@
 package nl.ou.s3server.domain
 
-import nl.ou.s3.common.LocationDto
-import nl.ou.s3.common.S3ExpirationPolicy
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject

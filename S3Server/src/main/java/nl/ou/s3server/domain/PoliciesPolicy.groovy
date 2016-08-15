@@ -5,8 +5,6 @@ import static nl.ou.s3server.config.GoogleGeocodingApi.API_KEY
 import java.time.LocalDateTime
 import java.time.ZoneId
 
-import nl.ou.s3.common.LocationDto
-
 import org.springframework.stereotype.Component
 
 import com.google.maps.GeoApiContext

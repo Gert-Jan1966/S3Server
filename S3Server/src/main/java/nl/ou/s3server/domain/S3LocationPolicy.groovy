@@ -1,4 +1,4 @@
-package nl.ou.s3.common
+package nl.ou.s3server.domain
 
 import groovy.transform.CompileStatic
 

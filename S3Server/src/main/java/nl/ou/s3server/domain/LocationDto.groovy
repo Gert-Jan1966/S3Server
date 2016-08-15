@@ -1,10 +1,10 @@
-package nl.ou.s3.common
+package nl.ou.s3server.domain
 
 import groovy.transform.CompileStatic
 
 /**
- * Klasse voor transport van locatiegegevens.<br>
- * De attributen van deze klasse worden gemapped vanuit het <i>android.location.Location</i> object.
+ * DTO voor transport van locatiegegevens.<br>
+ * De attributen van deze klasse worden oorspronkelijk gemapped vanuit het <i>android.location.Location</i> object.
  */
 @CompileStatic
 class LocationDto implements Serializable {
@@ -15,14 +15,6 @@ class LocationDto implements Serializable {
     /** Lengte- en breedtecoordinaten. */
     Double latitude
     Double longitude
-
-//    /** Hoogtecoordinaat. */
-//    Boolean hasAltitude
-//    Double altitude
-
-    /** Nauwkeurigheid. */
-//    Boolean hasAccuracy
-//    Float accuracy
 
     @Override
     String toString() {

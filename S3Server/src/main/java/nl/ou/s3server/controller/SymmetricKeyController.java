@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import nl.ou.s3.common.LocationDto;
 import nl.ou.s3server.domain.PolicyException;
+import nl.ou.s3server.domain.LocationDto;
 import nl.ou.s3server.domain.PoliciesPolicy;
 import nl.ou.s3server.domain.SymmetricKey;
 import nl.ou.s3server.repository.SymmetricKeyRepository;
