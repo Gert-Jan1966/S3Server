@@ -1,20 +1,21 @@
 package nl.ou.s3server.domain
 
-import static nl.ou.s3server.config.GoogleGeocodingApi.API_KEY
-
 import java.time.LocalDateTime
 import java.time.ZoneId
+
+import nl.ou.s3server.config.GoogleGeocodingApi
 
 import org.springframework.stereotype.Component
 
 import com.google.maps.GeoApiContext
 import com.google.maps.GeocodingApi
+import com.google.maps.GeocodingApiRequest
 import com.google.maps.model.AddressType
 import com.google.maps.model.GeocodingResult
 import com.google.maps.model.LatLng
 
 /**
- * Bevat de logica voor het checken van aangeleverde data tegen mogelijk aanwezige policies.<br>
+ * Bevat de logica voor het checken van aangeleverde data tegen mogelijk aanwezige policies.
  */
 @Component
 class PoliciesPolicy {
@@ -24,10 +25,13 @@ class PoliciesPolicy {
     
     /**
      * Controleer of aan eventueel bij <i>key</i> aanwezige policies wordt voldaan.
+     * 
+     * @return True indien aan van toepassing zijnde policies is voldaan.
+     * @throws PolicyException indien <u>niet</u> aan van toepassing zijnde policies is voldaan.
      */
-    Boolean checkForCompliance(SymmetricKey key, LocationDto location) throws PolicyException {
+    Boolean checkPolicies(SymmetricKey key, LocationDto location) throws PolicyException {
 
-        // Check de expirationPolicy.
+        // Valideer de expirationPolicy.
         if (key.expirationPolicy) {
             if (!isExpirationPolicyCompliant(key)) {
                 throw new PolicyException(EXPIRATION_ERROR)
@@ -36,7 +40,7 @@ class PoliciesPolicy {
         
         String locatieFoutmelding = null
         
-        // Check de locationPolicy.
+        // Valideer de locationPolicy.
         if (key.locationPolicy) {
             if (!isLocationPolicyCompliant(key, location, locatieFoutmelding)) {
                 throw new PolicyException(locatieFoutmelding)
@@ -71,16 +75,14 @@ class PoliciesPolicy {
      *         <i>Neveneffect:</i> bij foutsituaties wordt de invoerparameter <i>locatieFoutmelding</i> gevuld. 
      */
     private Boolean isLocationPolicyCompliant(SymmetricKey key, LocationDto location, String locatieFoutmelding) {
-        GeoApiContext geoApiContext = new GeoApiContext().setApiKey(API_KEY)
+        GeoApiContext geoApiContext = new GeoApiContext().setApiKey(GoogleGeocodingApi.API_KEY)
         GeocodingResult[] result = null
+        LatLng latLng = new LatLng(location.latitude, location.longitude)
+        GeocodingApiRequest request = GeocodingApi.reverseGeocode(geoApiContext, latLng).resultType(AddressType.POSTAL_CODE).language("nl")
         
         // Probeer de postcode van meegestuurde locatie te bepalen.
         try {
-            LatLng latLng = new LatLng(location.latitude, location.longitude)
-            
-            // Synchrone aanroep Google API, doorgaan zonder het resultaat af te wachten is zinloos!
-            result = GeocodingApi.reverseGeocode(geoApiContext, latLng).resultType(AddressType.POSTAL_CODE)
-                    .language("nl").await()
+            result = request.await()
         } catch (Exception e) {
             locatieFoutmelding = "${LOCATION_ERROR} ${e.message}"
             return false

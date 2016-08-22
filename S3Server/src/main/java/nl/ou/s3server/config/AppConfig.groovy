@@ -1,7 +1,5 @@
 package nl.ou.s3server.config
 
-import io.beanmapper.BeanMapper
-
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
@@ -61,13 +59,13 @@ class AppConfig extends AbstractMongoConfiguration {
         new MongoTemplate(mongoDbFactory(), converter)
     }
 
-    /**
-     * BeanMapper biedt functionaliteit om eenvoudig data tussen Java en/of Groovy klassen te kopieren.<br>
-     * Zie ook: <a href="http://beanmapper.io/">http://beanmapper.io/</a>.
-     */
-    @Bean
-    BeanMapper beanMapper() {
-        new BeanMapper()
-    }
+//    /**
+//     * BeanMapper biedt functionaliteit om eenvoudig data tussen Java en/of Groovy klassen te kopieren.<br>
+//     * Zie ook: <a href="http://beanmapper.io/">http://beanmapper.io/</a>.
+//     */
+//    @Bean
+//    BeanMapper beanMapper() {
+//        new BeanMapper()
+//    }
     
 }

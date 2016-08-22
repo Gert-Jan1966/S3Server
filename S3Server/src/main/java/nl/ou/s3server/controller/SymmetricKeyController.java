@@ -39,8 +39,8 @@ public class SymmetricKeyController {
     private SymmetricKeyRepository symmetricKeyRepository;
     
 //    /**
-//     * Retourneert een JSON-array met alle opgeslagen symmetric keys.<br>
-//     * ===>>> NIET IN DE PRODUCTIEVE VERSIE OPNEMEN!!!!!!! <<<===
+//     * Method o.b.v. een GET naar S3Server/symmetrickey<br>
+//     * Kan (tijdelijk) geactiveerd en gebruikt worden om snel functionaliteit op de server te testen.
 //     */
 //    @RequestMapping(method = GET)
 //    public List<SymmetricKey> findAllKeys() {
@@ -54,15 +54,12 @@ public class SymmetricKeyController {
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @RequestMapping(value = "/{id}", method = POST)
-    public ResponseEntity<?> findKey(
-            @PathVariable("id") String id, 
-            @RequestBody LocationDto location) {
-        
+    public ResponseEntity<?> findKey(@PathVariable("id") String id, @RequestBody LocationDto location) {
         logger.warn("Ontvangen locatiegegevens: " + location.toString());
         
         SymmetricKey key = symmetricKeyRepository.findOne(id);
         try {
-            policiesPolicy.checkForCompliance(key, location);
+            policiesPolicy.checkPolicies(key, location);
             return new ResponseEntity(key, HttpStatus.OK);
         } catch (PolicyException pe) {
             return new ResponseEntity(pe.getMessage(), HttpStatus.FORBIDDEN);

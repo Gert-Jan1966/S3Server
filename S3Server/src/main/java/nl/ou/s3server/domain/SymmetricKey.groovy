@@ -11,11 +11,10 @@ import org.springframework.data.mongodb.core.mapping.Document
 /**
  * Deze Document-klasse wordt gemapped op documents van de SymmetricKey Collection in MongoDB.
  */
-@CompileStatic
 @Document(collection="SymmetricKey")
+@CompileStatic
 class SymmetricKey {
 
-    /** Dit id wordt door de S3App gebruikt om een key op te vragen. */
     @Id 
     String id
     

@@ -5,12 +5,12 @@ import spock.lang.Specification
 import spock.lang.Subject
 import spock.lang.Title
 
-@Title("Unittest voor PolicyService")
+@Title("Unittest voor PoliciesPolicy")
 @Subject(PoliciesPolicy)
 class PoliciesPolicySpec extends Specification {
 
     @Shared
-    PoliciesPolicy policyService = new PoliciesPolicy()
+    PoliciesPolicy policyPolicy = new PoliciesPolicy()
     
     @Shared
     LocationDto nullLocation = null
@@ -28,7 +28,7 @@ class PoliciesPolicySpec extends Specification {
         SymmetricKey keyVerlopen = new SymmetricKey(expirationPolicy: verlopenExpirationPolicy)
 
         when:
-        policyService.checkForCompliance(keyVerlopen, nullLocation)
+        policyPolicy.checkPolicies(keyVerlopen, nullLocation)
 
         then:
         PolicyException exception = thrown()
@@ -40,7 +40,7 @@ class PoliciesPolicySpec extends Specification {
         SymmetricKey keyNogGeldig = new SymmetricKey(expirationPolicy: geldigeExpirationPolicy)
 
         then:
-        policyService.checkForCompliance(keyNogGeldig, nullLocation)
+        policyPolicy.checkPolicies(keyNogGeldig, nullLocation)
     }
     
 }
