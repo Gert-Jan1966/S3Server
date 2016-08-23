@@ -3,8 +3,8 @@ package nl.ou.s3server.domain
 import java.time.LocalDateTime
 import java.time.ZoneId
 
-import nl.ou.s3server.config.GoogleGeocodingApi
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component
 
 import com.google.maps.GeoApiContext
@@ -14,14 +14,18 @@ import com.google.maps.model.AddressType
 import com.google.maps.model.GeocodingResult
 import com.google.maps.model.LatLng
 
+import nl.ou.s3server.controller.SymmetricKeyController;
+
 /**
  * Bevat de logica voor het checken van aangeleverde data tegen mogelijk aanwezige policies.
  */
-@Component
 class PoliciesPolicy {
+    Logger logger = LoggerFactory.getLogger(PoliciesPolicy.class);
     
     static final String EXPIRATION_ERROR = "EXPIRATION_ERROR: Geldigheid van selfie is verlopen!"
     static final String LOCATION_ERROR = "LOCATION_ERROR:"
+    
+    String googleApiKey
     
     /**
      * Controleer of aan eventueel bij <i>key</i> aanwezige policies wordt voldaan.
@@ -75,15 +79,17 @@ class PoliciesPolicy {
      *         <i>Neveneffect:</i> bij foutsituaties wordt de invoerparameter <i>locatieFoutmelding</i> gevuld. 
      */
     private Boolean isLocationPolicyCompliant(SymmetricKey key, LocationDto location, String locatieFoutmelding) {
-        GeoApiContext geoApiContext = new GeoApiContext().setApiKey(GoogleGeocodingApi.API_KEY)
+        GeoApiContext geoApiContext = new GeoApiContext().setApiKey(googleApiKey)
         GeocodingResult[] result = null
         LatLng latLng = new LatLng(location.latitude, location.longitude)
-        GeocodingApiRequest request = GeocodingApi.reverseGeocode(geoApiContext, latLng).resultType(AddressType.POSTAL_CODE).language("nl")
-        
+
         // Probeer de postcode van meegestuurde locatie te bepalen.
         try {
-            result = request.await()
+            result = GeocodingApi.reverseGeocode(geoApiContext, latLng).resultType(AddressType.POSTAL_CODE)
+                    .language("nl").await()
         } catch (Exception e) {
+            logger.warn(e.message)
+            
             locatieFoutmelding = "${LOCATION_ERROR} ${e.message}"
             return false
         }

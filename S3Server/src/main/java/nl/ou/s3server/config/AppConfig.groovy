@@ -1,5 +1,6 @@
 package nl.ou.s3server.config
 
+import nl.ou.s3server.domain.PoliciesPolicy
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
@@ -24,15 +25,16 @@ import com.mongodb.WriteConcern
 @Configuration
 @ComponentScan(basePackages="nl.ou.s3server.domain")
 @EnableMongoRepositories(basePackages="nl.ou.s3server.repository")
-@PropertySource("classpath:mongodb.properties")
+@PropertySource("classpath:secret.properties")
 class AppConfig extends AbstractMongoConfiguration {
 
-    // Interpreteren van de benodigde properties uit mongodb.properties. 
+    // Interpreteren van de benodigde properties uit secret.properties. 
     private @Value('${mongo.dbname}') String dbname
     private @Value('${mongo.pass}') char[] pass
     private @Value('${mongo.portnr}') Integer portnr
     private @Value('${mongo.servername}') String servername
     private @Value('${mongo.user}') String user
+    private @Value('${google.maps.services.reversegeocoding.key}') String googleApiKey
     
     // Vereist door de AbstractMongoConfiguration klasse.
     @Override
@@ -58,7 +60,12 @@ class AppConfig extends AbstractMongoConfiguration {
         converter.typeMapper = new DefaultMongoTypeMapper(null)
         new MongoTemplate(mongoDbFactory(), converter)
     }
-
+    
+    @Bean
+    PoliciesPolicy policiesPolicy() {
+        new PoliciesPolicy(googleApiKey: googleApiKey)
+    }
+    
 //    /**
 //     * BeanMapper biedt functionaliteit om eenvoudig data tussen Java en/of Groovy klassen te kopieren.<br>
 //     * Zie ook: <a href="http://beanmapper.io/">http://beanmapper.io/</a>.

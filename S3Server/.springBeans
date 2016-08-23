@@ -7,10 +7,10 @@
 	</configSuffixes>
 	<enableImports><![CDATA[false]]></enableImports>
 	<configs>
-		<config>java:nl.ou.s3server.config.AppConfig</config>
 		<config>java:nl.ou.s3server.config.WebConfig</config>
 	</configs>
 	<autoconfigs>
+		<config>java:nl.ou.s3server.domain.PoliciesPolicy</config>
 	</autoconfigs>
 	<configSets>
 	</configSets>
