@@ -33,7 +33,6 @@ class S3LocationPolicySpec extends Specification {
         "11111"    ||     1
         "bbbb"     ||     1
         "1111"     ||     0
-
     }
     
 }

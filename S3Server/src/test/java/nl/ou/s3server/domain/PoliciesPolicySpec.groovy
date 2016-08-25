@@ -24,22 +24,22 @@ class PoliciesPolicySpec extends Specification {
     S3ExpirationPolicy geldigeExpirationPolicy = new S3ExpirationPolicy(expiryTimestamp: new Date().next())
    
     def "Test checkForCompliance voor expirationPolicy met verlopen geldigheid"() {
-        given:
+        given: "Een key document waarbij de datum in de expirationPolicy verlopen is"
         SymmetricKey keyVerlopen = new SymmetricKey(expirationPolicy: verlopenExpirationPolicy)
 
-        when:
+        when: "Tegen de policies wordt gechecked"
         policyPolicy.checkPolicies(keyVerlopen, nullLocation)
 
-        then:
+        then: "Word een PolicyExeption met EXPIRATION_ERROR gegenereerd"
         PolicyException exception = thrown()
         exception.message.contains(PoliciesPolicy.EXPIRATION_ERROR)
     }
     
     def "Test checkForCompliance voor expirationPolicy met nog geldige verloopdatum/-tijd"() {
-        when:
+        when: "Een key document waarbij de datum in de expirationPolicy nog niet verlopen is"
         SymmetricKey keyNogGeldig = new SymmetricKey(expirationPolicy: geldigeExpirationPolicy)
 
-        then:
+        then: "Check tegen de policies slaagt"
         policyPolicy.checkPolicies(keyNogGeldig, nullLocation)
     }
     

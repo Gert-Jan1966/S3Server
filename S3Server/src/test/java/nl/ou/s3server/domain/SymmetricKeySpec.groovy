@@ -16,16 +16,16 @@ class SymmetricKeySpec extends Specification {
     @Unroll
     def "Test validatieconstraints op velden SymmetricKey"() {
         when:
-        def symmetricKey = new SymmetricKey(id: id, key: key)
+        def symmetricKey = new SymmetricKey(key: key)
        
         then:
         validator.validate(symmetricKey).size() == violations
        
         where:
-        id    | key        || violations
-        "x"   | null       ||     1    
-        "x"   | ""         ||     1
-        "x"   | "A"        ||     0
+        key  || violations
+        null ||     1    
+        ""   ||     1
+        "A"  ||     0
     }
     
     def "Test transitieve constraints m.b.t. Policies in SymmetricKey"() {
@@ -33,7 +33,7 @@ class SymmetricKeySpec extends Specification {
         def locationPolicy = new S3LocationPolicy()
         def expirationPolicy = new S3ExpirationPolicy()
         def symmetricKey = new SymmetricKey(
-                locationPolicy: locationPolicy, expirationPolicy: expirationPolicy, key: "A")
+                locationPolicy: locationPolicy, expirationPolicy: expirationPolicy, key: "key")
         
         then: "moeten deze Policies zelf ook ingevulde waarden hebben"
         validator.validate(symmetricKey).size() == 2
