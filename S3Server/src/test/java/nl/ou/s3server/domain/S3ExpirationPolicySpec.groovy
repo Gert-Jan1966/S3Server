@@ -29,7 +29,6 @@ class S3ExpirationPolicySpec extends Specification {
         null                 ||     1
         new Date(70,0,1)     ||     1        // 1 januari 1970 00:00:00
         new Date(8099,11,31) ||     0        // 31 december 9999 00:00:00
-
     }
     
 }
