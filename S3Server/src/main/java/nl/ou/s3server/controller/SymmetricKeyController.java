@@ -1,11 +1,8 @@
 package nl.ou.s3server.controller;
 
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
-//import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
-
-//import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,11 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import nl.ou.s3server.domain.PolicyException;
 import nl.ou.s3server.domain.LocationDto;
 import nl.ou.s3server.domain.PoliciesPolicy;
+import nl.ou.s3server.domain.PolicyException;
 import nl.ou.s3server.domain.SymmetricKey;
 import nl.ou.s3server.repository.SymmetricKeyRepository;
 
@@ -30,6 +28,8 @@ import nl.ou.s3server.repository.SymmetricKeyRepository;
 @RequestMapping("/symmetrickey")
 public class SymmetricKeyController {
 
+    public static final String NOT_AUTHORIZED = "AUTHORIZATION_ERROR: U bent niet bevoegd deze aktie uit te voeren!";
+    
     Logger logger = LoggerFactory.getLogger(SymmetricKeyController.class);
 
     @Autowired
@@ -38,59 +38,87 @@ public class SymmetricKeyController {
     @Autowired
     private SymmetricKeyRepository symmetricKeyRepository;
     
-//    /**
-//     * Method o.b.v. een GET naar S3Server/symmetrickey<br>
-//     * Kan (tijdelijk) geactiveerd en gebruikt worden om snel functionaliteit op de server te testen.
-//     */
-//    @RequestMapping(method = GET)
-//    public List<SymmetricKey> findAllKeys() {
-//        logger.warn("Iemand heeft alle opgeslagen keys opgehaald!");
-//        return symmetricKeyRepository.findAll();
-//    }
-    
     /**
      * Opvragen SymmetricKey m.b.v. een id en meegestuurde locatiegegevens.<br>
      * Gebruikt returntype <i>ResponseEntity</i>, dit geeft meer flexibiliteit voor terugsturen van meldingen e.d.
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @RequestMapping(value = "/{id}", method = POST)
-    public ResponseEntity<?> findKey(@PathVariable("id") String id, @RequestBody LocationDto location) {
-        logger.warn("Ontvangen locatiegegevens: " + location.toString());
+    public ResponseEntity<?> findKey(
+            @PathVariable("id") String id,
+            @RequestParam("user") String user, 
+            @RequestBody LocationDto location) {
         
+        logger.warn("Ontvangen locatiegegevens: " + location.toString());
+
         SymmetricKey key = symmetricKeyRepository.findOne(id);
+        
+        // Mag de gebruiker deze actie uitvoeren?
+        if (!key.getOwner().equals(user)) {
+            return new ResponseEntity(NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
+        }
+        
         try {
             policiesPolicy.checkPolicies(key, location);
             return new ResponseEntity(key, HttpStatus.OK);
         } catch (PolicyException pe) {
-            return new ResponseEntity(pe.getMessage(), HttpStatus.FORBIDDEN);
+            return new ResponseEntity(pe.getMessage(), HttpStatus.UNAUTHORIZED);
         }
     }
 
     /**
      * Opslaan van een nieuwe symmetrische key.
      */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @RequestMapping(method = POST)
-    public SymmetricKey createKey(@RequestBody SymmetricKey symmetricKey) {
-        return symmetricKeyRepository.save(symmetricKey);
+    public ResponseEntity<?> createKey(@RequestParam("user") String user, @RequestBody SymmetricKey symmetricKey) {
+        
+        // Mag de gebruiker deze actie uitvoeren?
+        if (!symmetricKey.getOwner().equals(user)) {
+            return new ResponseEntity(NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
+        }
+        
+        SymmetricKey storedKey = symmetricKeyRepository.save(symmetricKey);
+        return new ResponseEntity(storedKey, HttpStatus.OK);
     }
     
     /**
      * Updaten van een bestaande symmetrische key.
      */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @RequestMapping(value = "/{id}", method = PUT)
-    public SymmetricKey updateKey(@RequestBody SymmetricKey symmetricKey) {
-        return symmetricKeyRepository.save(symmetricKey);
+    public ResponseEntity<?> updateKey(
+            @PathVariable(value = "id") String id, 
+            @RequestParam("user") String user, 
+            @RequestBody SymmetricKey symmetricKey) {
+        
+        // Mag de gebruiker deze actie uitvoeren?
+        SymmetricKey key = symmetricKeyRepository.findOne(id);
+        if (!key.getOwner().equals(user)) {
+            return new ResponseEntity(NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
+        }
+        
+        SymmetricKey storedKey = symmetricKeyRepository.save(symmetricKey);
+        return new ResponseEntity(storedKey, HttpStatus.OK);
     }
 
     /**
      * Verwijderen SymmetricKey m.b.v. een id.<br>
      * Er wordt geen bevestiging teruggestuurd.
      */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @RequestMapping(value = "/{id}", method = DELETE)
-    public void deleteKey(@PathVariable(value = "id") String id) {
-        logger.warn("Verwijderen verzocht voor key: " + id);
+    public ResponseEntity<?> deleteKey(@PathVariable(value = "id") String id, @RequestParam("user") String user) {
+        logger.warn("Verwijderen verzocht voor key: " + id + " door gebruiker: " + user);
+        
+        // Mag de gebruiker deze actie uitvoeren?
+        SymmetricKey key = symmetricKeyRepository.findOne(id);
+        if (!key.getOwner().equals(user)) {
+            return new ResponseEntity(NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
+        }
         
         symmetricKeyRepository.delete(id);
+        return new ResponseEntity("", HttpStatus.OK);
     }
 
 }

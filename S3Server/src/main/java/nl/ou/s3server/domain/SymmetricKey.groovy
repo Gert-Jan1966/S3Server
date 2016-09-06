@@ -4,6 +4,7 @@ import groovy.transform.CompileStatic
 
 import javax.validation.Valid
 
+import org.hibernate.validator.constraints.Email
 import org.hibernate.validator.constraints.NotEmpty
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
@@ -15,10 +16,16 @@ import org.springframework.data.mongodb.core.mapping.Document
 @CompileStatic
 class SymmetricKey {
 
-    @Id 
+    @Id
     String id
     
-    /** Optionele Policy t.b.v. tijdstip einde geldigheid.  */
+    @NotEmpty(message="Veld owner mag niet leeg zijn.")
+    @Email(message="Veld owner moet een geldig emailadres bevatten.")
+    String owner
+
+//    List<String> recipients
+    
+    /** Optionele Policy t.b.v. tijdstip einde geldigheid. */
     @Valid
     S3ExpirationPolicy expirationPolicy
     

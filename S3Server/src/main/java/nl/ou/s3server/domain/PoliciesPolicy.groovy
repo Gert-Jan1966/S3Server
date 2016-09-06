@@ -42,11 +42,11 @@ class PoliciesPolicy {
             }
         }
         
-        String locatieFoutmelding = null
-        
         // Valideer de locationPolicy.
         if (key.locationPolicy) {
-            if (!isLocationPolicyCompliant(key, location, locatieFoutmelding)) {
+            String locatieFoutmelding = isLocationPolicyCompliant(key, location)
+            
+            if (locatieFoutmelding) {
                 throw new PolicyException(locatieFoutmelding)
             }
         }
@@ -76,37 +76,32 @@ class PoliciesPolicy {
      * Ofwel: valt de meegestuurde locatie binnen de postcode van de policy?
      * 
      * @return Komt de postcode volgend uit de ontvangen coordinaten overeen met postcode uit de policy?<br>
-     *         <i>Neveneffect:</i> bij foutsituaties wordt de invoerparameter <i>locatieFoutmelding</i> gevuld. 
+     *         Bij foutsituaties wordt de locatieFoutmelding teruggegeven, anders wordt null geretourneerd. 
      */
-    private Boolean isLocationPolicyCompliant(SymmetricKey key, LocationDto location, String locatieFoutmelding) {
+    private String isLocationPolicyCompliant(SymmetricKey key, LocationDto location) {
         GeoApiContext geoApiContext = new GeoApiContext().setApiKey(googleApiKey)
         GeocodingResult[] result = null
         LatLng latLng = new LatLng(location.latitude, location.longitude)
-
+        
         // Probeer de postcode van meegestuurde locatie te bepalen.
         try {
             result = GeocodingApi.reverseGeocode(geoApiContext, latLng).resultType(AddressType.POSTAL_CODE)
                     .language("nl").await()
         } catch (Exception e) {
-            logger.warn(e.message)
-            
-            locatieFoutmelding = "${LOCATION_ERROR} ${e.message}"
-            return false
+            return "${LOCATION_ERROR} ${e.message}"
         }
         
         // Geef foutmelding als we geen resultaat hebben ontvangen.
         if (!result) {
-            locatieFoutmelding = "${LOCATION_ERROR} Response vanuit GeocodingAPI is leeg!"
-            return false
+            return "${LOCATION_ERROR} Response vanuit GeocodingAPI is leeg!"
         }
 
         // Kijk of de 4 cijfers van de postcodes met elkaar matchen.
         if (result[0].formattedAddress[0..3] != key.locationPolicy.postalCode[0..3]) {
-            locatieFoutmelding = "${LOCATION_ERROR} Er wordt niet aan de locatiebeperking voldaan!"
-            return false
+            return "${LOCATION_ERROR} Er wordt niet aan de locatiebeperking voldaan!"
         }
         
-        true
+        null
     }
 
 }
