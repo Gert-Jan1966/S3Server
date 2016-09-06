@@ -19,7 +19,7 @@ import nl.ou.s3server.controller.SymmetricKeyController;
 /**
  * Bevat de logica voor het checken van aangeleverde data tegen mogelijk aanwezige policies.
  */
-class PoliciesPolicy { 
+class PoliciesPolicy {
     Logger logger = LoggerFactory.getLogger(PoliciesPolicy.class);
     
     static final String EXPIRATION_ERROR = "EXPIRATION_ERROR: Geldigheid van selfie is verlopen!"
