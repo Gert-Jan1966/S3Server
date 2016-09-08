@@ -49,7 +49,7 @@ public class SymmetricKeyController {
             @RequestParam("user") String user, 
             @RequestBody LocationDto location) {
         
-        logger.warn("Ontvangen locatiegegevens: " + location.toString());
+        logger.info("Ontvangen locatiegegevens: " + location.toString());
 
         SymmetricKey key = symmetricKeyRepository.findOne(id);
         
@@ -109,7 +109,7 @@ public class SymmetricKeyController {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @RequestMapping(value = "/{id}", method = DELETE)
     public ResponseEntity<?> deleteKey(@PathVariable(value = "id") String id, @RequestParam("user") String user) {
-        logger.warn("Verwijderen verzocht voor key: " + id + " door gebruiker: " + user);
+        logger.info("Verwijderen verzocht voor key: " + id + " door gebruiker: " + user);
         
         // Mag de gebruiker deze actie uitvoeren?
         SymmetricKey key = symmetricKeyRepository.findOne(id);

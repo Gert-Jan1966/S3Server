@@ -33,7 +33,7 @@ class SymmetricKeySpec extends Specification {
     }
     
     def "Test transitieve constraints m.b.t. Policies in SymmetricKey"() {
-        when: "SymmetricKey 1 of 2 Policies bevat"
+        when: "SymmetricKey 2 lege Policies bevat"
         def locationPolicy = new S3LocationPolicy()
         def expirationPolicy = new S3ExpirationPolicy()
         def symmetricKey = new SymmetricKey(
