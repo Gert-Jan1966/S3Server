@@ -23,8 +23,6 @@ class SymmetricKey {
     @Email(message="Veld owner moet een geldig emailadres bevatten.")
     String owner
 
-//    List<String> recipients
-    
     /** Optionele Policy t.b.v. tijdstip einde geldigheid. */
     @Valid
     S3ExpirationPolicy expirationPolicy

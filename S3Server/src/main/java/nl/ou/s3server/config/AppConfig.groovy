@@ -66,13 +66,4 @@ class AppConfig extends AbstractMongoConfiguration {
         new PoliciesPolicy(googleApiKey: googleApiKey)
     }
     
-//    /**
-//     * BeanMapper biedt functionaliteit om eenvoudig data tussen Java en/of Groovy klassen te kopieren.<br>
-//     * Zie ook: <a href="http://beanmapper.io/">http://beanmapper.io/</a>.
-//     */
-//    @Bean
-//    BeanMapper beanMapper() {
-//        new BeanMapper()
-//    }
-    
 }
