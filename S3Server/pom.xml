@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>nl.gjdenbesten</groupId>
     <artifactId>S3Server</artifactId>
-    <version>0.4.1</version>
+    <version>1.0.0</version>
     <packaging>war</packaging>
     <name>S3Server</name>
   
@@ -42,7 +42,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.3</version>
                 
-                <!-- Groovy compiler: compileert zowel .java als .groovy sources naar JavaSE 8. -->
+                <!-- 
+                    Groovy compiler: compileert zowel .java als .groovy sources naar JavaSE 8.
+                 -->
                 <configuration>
                     <compilerId>groovy-eclipse-compiler</compilerId>
                 </configuration>
@@ -59,6 +61,7 @@
                     </dependency>
                 </dependencies>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -146,7 +149,7 @@
             <version>${groovy.version}</version>
         </dependency>
         
-        <!-- Servlet, JSP dependencies volgens Tomcat 8 / Java EE 7. -->
+        <!-- Servlet en JSP dependencies volgens Tomcat 8 / Java EE 7. -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -197,7 +200,7 @@
             <version>${hibernate-validator.version}</version>
         </dependency>
         
-        <!-- Beanmapper bijv. van/naar DTO's.
+        <!-- Beanmapper bijv. van/naar DTO's; nog niet nodig binnen S3Server 1.0.0.
         <dependency>
             <groupId>io.beanmapper</groupId>
             <artifactId>beanmapper</artifactId>
@@ -258,14 +261,6 @@
             <version>3.2.0</version>
             <scope>test</scope>
         </dependency>
-        <!-- 
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-core</artifactId>
-            <version>3.3.2</version>
-            <scope>test</scope>
-        </dependency>
-         -->
     </dependencies>
         
 </project>
